@@ -632,6 +632,101 @@ const TREE_CONTENT = {
           <li><code>/resume</code> — เริ่ม session ต่อจากครั้งที่แล้ว</li>
         </ul>
       </div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่างใช้งานจริง 5 รูปแบบ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ ระบบ Hospital MedRecord (ที่กำลังทำอยู่)</h4>
+        <pre class="code-block" data-lang="markdown"><span class="key"># MedRecord v1.0 — Hospital Medical Records</span>
+
+<span class="key">## Domain rules</span>
+- ผู้ป่วย 1 คนมีได้หลาย HN (Hospital Number)
+- SOAP note ห้ามแก้ไขหลังจาก sign แล้ว 24 ชม. (audit trail)
+- Prescription ต้องมี doctor signature เสมอ
+- ส่งแจ้งเตือน LINE OA เมื่อมี lab result ใหม่
+
+<span class="key">## Module list (13 modules)</span>
+1. Patient Registry  2. OPD Visit  3. SOAP Notes
+4. Vital Signs  5. Lab Orders  6. Prescription
+7. ICD-10 Coding  8. Appointment  9. Billing
+10. RBAC  11. LINE OA Bot  12. Reports  13. Audit Log
+
+<span class="key">## Glassmorphism dark theme</span>
+- Background: rgba(13,17,32,0.8) + backdrop-filter blur
+- Accent: #22d3ee (cyan)
+- Font: Prompt 300/400/500/600</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ ระบบ E-commerce Shop Online</h4>
+        <pre class="code-block" data-lang="markdown"><span class="key"># BUGpairoj Shop — E-commerce Platform</span>
+
+<span class="key">## Tech Stack</span>
+- PHP 8.2 + MySQL 8 + Redis (cache cart)
+- Stripe + Omise + PromptPay QR
+- AWS S3 สำหรับรูปสินค้า
+
+<span class="key">## Business rules</span>
+- ราคาแสดงรวม VAT 7% เสมอ
+- คำนวณค่าส่งตาม Kerry/Flash zones
+- คะแนนสะสม: 1 บาท = 1 point, 100 point = 10 บาท
+- คูปอง: ใช้ได้ครั้งเดียวต่อ user
+
+<span class="key">## Performance budget</span>
+- Homepage TTI < 2.5s (Lighthouse mobile)
+- Product page LCP < 1.8s
+- Cart API response < 200ms (p95)</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ ระบบ School Management (SMS)</h4>
+        <pre class="code-block" data-lang="markdown"><span class="key"># School Management System</span>
+
+<span class="key">## Stakeholders</span>
+- Admin / ผู้อำนวยการ / ครู / นักเรียน / ผู้ปกครอง
+
+<span class="key">## Critical features</span>
+- ปพ.5 (เกรดรายวิชา) + ปพ.6 (สมุดพก) — print-ready PDF
+- เกรดต้อง round 0.50 ขึ้นไปเสมอ (เช่น 2.49 → 2.5)
+- ปฏิทินใช้ พ.ศ. (เช่น "12 พฤษภาคม 2569")
+- Parent portal ดูผ่าน LINE LIFF
+
+<span class="key">## Security</span>
+- ครูเห็นเฉพาะนักเรียนในห้องที่สอน
+- ผู้ปกครองเห็นเฉพาะลูกของตัวเอง (citizen_id mapping)
+- Audit log ทุกการแก้เกรด</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ ระบบ POS ร้านอาหารชาบู (FoodFlow)</h4>
+        <pre class="code-block" data-lang="markdown"><span class="key"># FoodFlow POS — Shabu Restaurant</span>
+
+<span class="key">## Operating model</span>
+- บุฟเฟต์ 90 นาที — ตั้งเวลาทุกโต๊ะ
+- QR ordering ที่โต๊ะ (LIFF) — ลูกค้าสั่งเอง
+- Kitchen Display System (KDS) แยกตามครัว: เนื้อ/ผัก/ของหวาน
+
+<span class="key">## Critical timing</span>
+- Order → Kitchen ต้อง < 3 วินาที
+- WebSocket realtime ระหว่าง POS, KDS, ลูกค้า
+- Auto-flag เมื่อ order ค้างเกิน 5 นาที
+
+<span class="key">## Cash drawer</span>
+- ทุกเปิด-ปิดต้องบันทึก: เวลา + พนักงาน + ยอด
+- End-of-day report ส่ง LINE Manager อัตโนมัติ</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ ระบบ WFH e-Attendance (GPS)</h4>
+        <pre class="code-block" data-lang="markdown"><span class="key"># WFH e-Attendance System</span>
+
+<span class="key">## Check-in rules</span>
+- ใช้ Geolocation API + Leaflet.js แสดงแผนที่
+- รัศมี office: 100 เมตร (config ได้)
+- WFH: บันทึกพิกัดบ้านครั้งแรก, ครั้งถัดไปต้องใกล้กัน
+- ห้าม mock GPS — ตรวจจับด้วย accuracy + speed sanity
+
+<span class="key">## Approval flow</span>
+- ลาป่วย: HR approve อัตโนมัติ ถ้า < 1 วัน
+- ลากิจ: ต้อง manager approve ก่อน
+- OT: manager + HR ต้อง approve ทั้งคู่
+
+<span class="key">## Notifications</span>
+- LINE Notify ตอน check-in/out
+- Telegram alert ถ้าพนักงานลืม check-out > 18:00</pre>
+      </div>
     `
   },
 
@@ -687,6 +782,69 @@ const TREE_CONTENT = {
 }</pre>
       </div>
       <div class="tip-box"><span class="icon">✅</span><div>ใช้ไฟล์นี้สำหรับ <strong>ค่ากลางที่ทั้งทีมต้องใช้เหมือนกัน</strong> เช่น hooks, denied commands, plugins ที่จำเป็น</div></div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่างใช้งานจริง 4 รูปแบบ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Solo Dev — เน้นความเร็ว</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"model"</span>: <span class="str">"claude-sonnet-4-20250514"</span>,
+  <span class="key">"allowedTools"</span>: [<span class="str">"Edit"</span>, <span class="str">"Bash"</span>, <span class="str">"WebSearch"</span>, <span class="str">"WebFetch"</span>],
+  <span class="key">"deniedTools"</span>: [<span class="str">"Bash(rm -rf /*)"</span>],
+  <span class="key">"autoApprove"</span>: <span class="key">true</span>
+}</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ Team — มี code review hook</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"model"</span>: <span class="str">"claude-sonnet-4-20250514"</span>,
+  <span class="key">"hooks"</span>: {
+    <span class="key">"PostToolUse"</span>: <span class="str">"./scripts/auto-format.sh"</span>,
+    <span class="key">"PreCommit"</span>: <span class="str">"./scripts/team-review.sh"</span>
+  },
+  <span class="key">"allowedTools"</span>: [<span class="str">"Edit"</span>, <span class="str">"Bash"</span>, <span class="str">"Read"</span>],
+  <span class="key">"deniedTools"</span>: [
+    <span class="str">"Bash(rm -rf*)"</span>,
+    <span class="str">"Bash(git push --force*)"</span>,
+    <span class="str">"Bash(DROP*)"</span>
+  ],
+  <span class="key">"requiredApprovers"</span>: [<span class="str">"@senior-dev"</span>]
+}</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ CI/CD-focused — สำหรับ DevOps</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"hooks"</span>: {
+    <span class="key">"SessionStart"</span>: <span class="str">"./scripts/load-env.sh"</span>,
+    <span class="key">"PreToolUse"</span>: <span class="str">"./scripts/secret-scan.sh"</span>,
+    <span class="key">"PostToolUse"</span>: <span class="str">"./scripts/lint-and-test.sh"</span>,
+    <span class="key">"SessionEnd"</span>: <span class="str">"./scripts/save-summary.sh"</span>
+  },
+  <span class="key">"plugins"</span>: [
+    <span class="str">"./plugins/github-actions"</span>,
+    <span class="str">"./plugins/docker-helper"</span>
+  ],
+  <span class="key">"mcpServers"</span>: [<span class="str">"github"</span>, <span class="str">"docker"</span>, <span class="str">"sentry"</span>]
+}</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Security-First — Banking / Healthcare</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"model"</span>: <span class="str">"claude-opus-4-7"</span>,
+  <span class="key">"allowedTools"</span>: [<span class="str">"Read"</span>, <span class="str">"Grep"</span>],
+  <span class="key">"deniedTools"</span>: [
+    <span class="str">"Bash"</span>,
+    <span class="str">"WebFetch"</span>,
+    <span class="str">"WebSearch"</span>
+  ],
+  <span class="key">"hooks"</span>: {
+    <span class="key">"PreToolUse"</span>: <span class="str">"./scripts/audit-log.sh"</span>,
+    <span class="key">"PreCommit"</span>: <span class="str">"./scripts/full-security-scan.sh"</span>
+  },
+  <span class="key">"audit"</span>: {
+    <span class="key">"enabled"</span>: <span class="key">true</span>,
+    <span class="key">"logPath"</span>: <span class="str">"/var/log/claude-audit"</span>
+  },
+  <span class="key">"requireApproval"</span>: [<span class="str">"Edit"</span>, <span class="str">"Bash"</span>]
+}</pre>
+      </div>
     `
   },
 
@@ -768,6 +926,71 @@ allowed-tools: [Bash, Read]
       </div>
 
       <div class="tip-box"><span class="icon">💡</span><div>เพิ่ม <code>$ARGUMENTS</code> ในไฟล์ .md เพื่อให้รับ argument: <code>/review src/auth/</code> → review เฉพาะโฟลเดอร์ที่ระบุ</div></div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่าง /review เฉพาะทาง 4 แบบ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ /review-security — เน้น OWASP Top 10</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+description: Security-focused review (OWASP Top 10)
+allowed-tools: [Bash, Grep, Read]
+---</span>
+
+ตรวจสอบทุกข้อใน OWASP Top 10 (2021):
+1. <span class="str">A01 Broken Access Control</span> — เช็ค RBAC ทุก endpoint
+2. <span class="str">A02 Cryptographic Failures</span> — bcrypt cost ≥ 12, TLS 1.3
+3. <span class="str">A03 Injection</span> — PDO prepared statements เท่านั้น
+4. <span class="str">A04 Insecure Design</span> — threat model
+5. <span class="str">A05 Security Misconfig</span> — error messages ห้ามแสดง stack
+6. <span class="str">A07 Auth Failures</span> — rate limit + lockout
+7. <span class="str">A09 Logging</span> — เก็บ audit log ทุก auth event
+
+ส่งผลแบบ Risk Matrix (Likelihood × Impact)</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ /review-perf — เน้น Performance</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+description: Performance review on PHP/MySQL
+---</span>
+
+ตรวจสอบ:
+- <span class="str">N+1 query</span> — มี loop ที่ query ใน loop ไหม
+- <span class="str">Missing index</span> — รัน <span class="var">EXPLAIN</span> บนทุก query หลัก
+- <span class="str">SELECT *</span> — เปลี่ยนเป็นเลือก column เท่าที่ต้องใช้
+- <span class="str">Cache strategy</span> — Redis สำหรับ data ที่อ่านบ่อย
+- <span class="str">Image optimization</span> — มี WebP / lazy loading ไหม
+- <span class="str">Bundle size</span> — JS/CSS ที่ส่งให้ user เกิน 250KB ไหม</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ /review-bugpairoj — BUGpairoj convention check</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+description: Check BUGpairoj signature stack compliance
+---</span>
+
+Checklist:
+- [ ] ทุก SQL ใช้ PDO prepared statements
+- [ ] ทุก form มี CSRF token
+- [ ] ทุก endpoint เช็ค RBAC (5-tier)
+- [ ] วันที่แสดงเป็น พ.ศ. ทุกที่
+- [ ] ใช้ Google Font "Prompt"
+- [ ] Footer มี <span class="str">"AI Pairoj — BUGpairoj Group"</span>
+- [ ] CSV export ใส่ UTF-8 BOM
+- [ ] Glassmorphism dark theme + Tailwind
+- [ ] ส่งแจ้งเตือน LINE/Telegram ตามที่กำหนด
+- [ ] Multi-company isolation ด้วย <span class="var">company_id</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ /review-db — Database review</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+description: Database schema & query review
+---</span>
+
+ตรวจสอบ:
+- ทุก table มี PK + <span class="var">created_at</span>, <span class="var">updated_at</span>
+- มี index บน FK และ column ที่ใช้ใน WHERE บ่อย
+- VARCHAR ใช้ขนาดเหมาะสม (ไม่ใช่ 255 ทุก column)
+- ใช้ <span class="str">utf8mb4</span> สำหรับ Thai + emoji
+- Soft delete ใช้ <span class="var">deleted_at</span> nullable
+- Foreign key มี <span class="var">ON DELETE CASCADE</span> หรือ <span class="var">SET NULL</span>
+- รัน <span class="var">EXPLAIN</span> บน query ที่คาดว่าจะช้า</pre>
+      </div>
     `
   },
 
@@ -788,6 +1011,69 @@ allowed-tools: [Bash]
 3. Zip ผลลัพธ์เป็น <span class="var">deploy-$(date +%Y%m%d).zip</span>
 4. Push ขึ้น staging server ผ่าน rsync
 5. ส่ง LINE notification แจ้งทีม</pre>
+
+      <div class="section">
+        <h3>📋 ตัวอย่าง deploy 4 สถานการณ์</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ /deploy-xampp — Deploy ไป XAMPP localhost</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+description: Deploy to local XAMPP for testing
+---</span>
+
+1. Build: <span class="var">npm run build</span>
+2. Copy ไป <span class="var">D:/xampp/htdocs/medrecord/</span>
+3. Backup DB เก่าก่อน: <span class="var">mysqldump bugpairoj > backup-$(date).sql</span>
+4. รัน migration: <span class="var">php artisan migrate</span>
+5. Clear cache: ลบ <span class="var">storage/cache/*</span>
+6. เปิด <span class="str">http://localhost/medrecord</span> ทดสอบ</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ /deploy-prod — Production พร้อม rollback</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+description: Production deploy with auto rollback
+---</span>
+
+1. ตรวจ git tag: ต้องมี <span class="var">v*</span> tag เท่านั้น
+2. Backup ไฟล์เดิม → <span class="var">/backup/release-prev.zip</span>
+3. Health check ก่อน: GET /health → ต้อง 200
+4. Deploy ผ่าน rsync (atomic symlink)
+5. Health check หลัง deploy: 3 ครั้ง ห่างกัน 10 วิ
+6. ถ้า fail 2/3 → auto rollback ไปไฟล์เดิม
+7. แจ้ง LINE Group "Production-Alert"
+8. บันทึก deploy log ใน Google Sheets</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ /deploy-hotfix — Hotfix แบบเร่งด่วน</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+description: Emergency hotfix deployment
+---</span>
+
+⚠️ ใช้เมื่อ production มีปัญหาเท่านั้น
+
+1. ดึง branch <span class="var">hotfix/*</span>
+2. รัน <span class="strong">smoke test</span> เท่านั้น (ไม่ใช่ full suite)
+3. Deploy ทันทีไม่ต้องรอ approval
+4. Tag version: <span class="var">v1.2.3-hotfix.1</span>
+5. ส่ง LINE alert ไปทุก channel + Telegram CTO
+6. สร้าง post-mortem doc อัตโนมัติใน <span class="var">docs/postmortem/</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ /deploy-multi — Multi-company deploy</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+description: Deploy to all subsidiary companies
+---</span>
+
+BUGpairoj Group มีหลายบริษัทย่อย — deploy ทีเดียวทุกที่:
+
+1. List companies จาก <span class="var">companies.yml</span>:
+   - bugpairoj-main (port 8080)
+   - ssb-finance (port 8081)
+   - waraporn-clinic (port 8082)
+   
+2. Deploy เรียงตามลำดับ:
+   - Test environment ก่อน (ทุกบริษัท)
+   - ถ้าผ่านทั้งหมด → deploy production ทีละบริษัท
+   - ห่างกัน 5 นาที (canary)
+   
+3. Per-company config: ใช้ <span class="var">.env.{company_code}</span></pre>
+      </div>
     `
   },
 
@@ -806,6 +1092,39 @@ description: Execute full test suite (unit + integration + e2e)
 2. Integration: <span class="var">npm run test:integration</span>
 3. E2E (Playwright): <span class="var">npm run test:e2e</span>
 4. รายงานสรุป pass/fail พร้อม coverage %</pre>
+
+      <div class="section">
+        <h3>📋 ตัวอย่าง test command 4 รูปแบบ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ /test-quick — Smoke test ก่อน commit</h4>
+        <pre class="code-block" data-lang="markdown">รัน test ที่จำเป็นที่สุดเพียง 30 วินาที:
+- Lint check (eslint, phpcs)
+- Type check (tsc --noEmit)
+- Critical path test (auth, payment)
+หยุดทันทีถ้าเจอ fail</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ /test-coverage — Coverage report</h4>
+        <pre class="code-block" data-lang="markdown">1. รัน <span class="var">vitest run --coverage</span>
+2. สร้าง HTML report ใน <span class="var">coverage/</span>
+3. แสดงตัวเลข: lines / functions / branches / statements
+4. <span class="str">Fail ถ้า coverage < 80%</span>
+5. แจ้ง LINE ทีม dev ทุกเช้า</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ /test-watch — Watch mode สำหรับ TDD</h4>
+        <pre class="code-block" data-lang="markdown">เปิด vitest ใน watch mode:
+- รัน test เฉพาะไฟล์ที่เพิ่งแก้
+- Hot reload ตอนแก้ source หรือ test
+- แสดงผลแบบ inline ใน terminal
+ใช้เมื่อกำลัง refactor หรือ TDD</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ /test-e2e-mobile — E2E แบบ mobile</h4>
+        <pre class="code-block" data-lang="markdown">รัน Playwright ในโหมด mobile:
+- Device: iPhone 14, Pixel 7
+- ทดสอบ: LIFF, QR ordering, GPS check-in
+- Screenshot ทุก step → save ใน <span class="var">tests/screenshots/</span>
+- ถ้า fail → upload video evidence ไป S3
+- ส่ง report ไป Slack #qa-mobile</pre>
+      </div>
     `
   },
 
@@ -828,6 +1147,66 @@ description: Scaffold new module with conventions
    - Footer credit
    - RBAC check
 4. Update README.md</pre>
+
+      <div class="section">
+        <h3>📋 ตัวอย่าง bootstrap 5 ประเภท</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ /bootstrap-crud — สร้าง CRUD module เต็ม</h4>
+        <pre class="code-block" data-lang="markdown">รับชื่อ entity (เช่น "Patient")
+
+สร้างไฟล์ครบชุด:
+- <span class="var">PatientController.php</span> (5 actions: index/create/store/edit/update/destroy)
+- <span class="var">PatientModel.php</span> (PDO + soft delete)
+- <span class="var">views/patient/{index,form,detail}.php</span>
+- <span class="var">migrations/create_patients_table.sql</span>
+- <span class="var">routes/patient.php</span>
+
+ทุกไฟล์ใส่:
+- CSRF token
+- RBAC check (manager+)
+- Glassmorphism dark UI
+- Buddhist Era date picker</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ /bootstrap-api — REST API endpoint</h4>
+        <pre class="code-block" data-lang="markdown">สร้าง API endpoint ใหม่:
+- Route file + controller + validator
+- OpenAPI spec ใน <span class="var">docs/api/</span>
+- Postman collection สำหรับทดสอบ
+- Rate limit: 100 req/min ต่อ IP
+- JWT middleware
+- Request/response logging
+- Test ครบ 3 ระดับ (unit, integration, e2e)</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ /bootstrap-report — Report module + export</h4>
+        <pre class="code-block" data-lang="markdown">สร้างหน้า report พร้อม:
+- Filter UI (date range พ.ศ., dropdown, search)
+- Table แสดงข้อมูล + pagination
+- Chart.js (bar / line / pie)
+- Export 3 format:
+  - CSV (UTF-8 BOM)
+  - Excel (.xlsx ผ่าน PhpSpreadsheet)
+  - PDF (TCPDF + Thai font Sarabun)
+- Email schedule (เช่น ส่งทุกจันทร์ 9:00)</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ /bootstrap-line-bot — LINE Bot module</h4>
+        <pre class="code-block" data-lang="markdown">สร้าง LINE Messaging API integration:
+- Webhook endpoint + signature verification
+- Reply / Push API helpers
+- Flex Message templates (5 ตัวอย่าง)
+- Rich menu setup script
+- Quick Reply buttons
+- LIFF link generation
+- ลงทะเบียน user → ผูกกับ <span class="var">user_id</span> ในระบบ</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ /bootstrap-rbac — RBAC module เต็มระบบ</h4>
+        <pre class="code-block" data-lang="markdown">สร้างระบบสิทธิ์ 5 ชั้น:
+- Tables: <span class="var">roles, permissions, role_permissions, user_roles</span>
+- 5 default roles: superadmin / admin / manager / user / viewer
+- UI: Permission Matrix (checkbox grid)
+- Helper: <span class="var">$user->can('edit_patient')</span>
+- Middleware: <span class="var">@requireRole('manager')</span>
+- Audit log ทุกการเปลี่ยน permission</pre>
+      </div>
     `
   },
 
@@ -1114,6 +1493,57 @@ grep -rE <span class="str">"(api_key|password|secret)\\s*=\\s*['\\"]"</span> src
 <span class="key">denied_tools</span>:
   - Edit          <span class="cmt"># reviewer ห้ามแก้ code เอง</span>
   - Bash(rm*)</pre>
+
+      <div class="section">
+        <h3>📋 ตัวอย่าง agent personality 4 แบบ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Strict Reviewer — เข้มงวดมาก</h4>
+        <pre class="code-block" data-lang="yaml"><span class="key">system_prompt</span>: |
+  คุณคือ reviewer ที่เข้มงวดที่สุด
+  - ไม่ approve ถ้าไม่มี test
+  - ไม่ approve ถ้า function เกิน 50 บรรทัด
+  - ไม่ approve ถ้าไม่มี TypeScript types
+  - ทุก PR ต้องอธิบายเหตุผลของการเปลี่ยน
+  - ใช้ภาษาตรงไปตรงมา ไม่อ้อมค้อม</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ Mentor Reviewer — สอนพร้อมตรวจ</h4>
+        <pre class="code-block" data-lang="yaml"><span class="key">system_prompt</span>: |
+  คุณคือ mentor ที่ใจดีแต่มีมาตรฐาน
+  - อธิบายเหตุผลของทุก feedback
+  - แนะนำ resource ให้อ่านเพิ่ม (link MDN, OWASP)
+  - ยกตัวอย่าง bad code → good code
+  - ให้คำชมเมื่อเขียนดี
+  - ใช้ภาษาเป็นมิตร เน้นการเรียนรู้</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ Performance Reviewer</h4>
+        <pre class="code-block" data-lang="yaml"><span class="key">system_prompt</span>: |
+  คุณ focus เฉพาะ performance:
+  - หา N+1 query
+  - หา missing index
+  - หา blocking I/O ใน main thread
+  - คำนวณ Big-O ของทุก function
+  - Suggest cache strategy
+  - ใช้ <span class="var">EXPLAIN</span> ตรวจ query plan
+  
+<span class="key">allowed_tools</span>: [Read, Grep, Bash(EXPLAIN*)]</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ ISO 27001 Auditor — สำหรับ compliance</h4>
+        <pre class="code-block" data-lang="yaml"><span class="key">system_prompt</span>: |
+  คุณคือ ISO 27001 lead auditor
+  ตรวจตาม Annex A controls:
+  - A.5 Information security policies
+  - A.8 Asset management
+  - A.9 Access control (RBAC)
+  - A.12 Operations security
+  - A.14 System acquisition & development
+  - A.18 Compliance
+  
+  สรุปเป็น <span class="strong">Audit Finding Report</span>:
+  - Major / Minor / Observation
+  - Reference to control number
+  - Evidence (file + line number)
+  - Recommendation</pre>
+      </div>
     `
   },
 
@@ -1268,6 +1698,77 @@ grep -rE <span class="str">"(api_key|password|secret)\\s*=\\s*['\\"]"</span> src
   }
 }</pre>
       <div class="warn-box"><span class="icon">🔒</span><div>ใช้ <code>\${env:VAR_NAME}</code> เสมอ — <strong>ห้ามใส่ token ตรงๆ</strong> ในไฟล์นี้</div></div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่าง MCP setup 5 รูปแบบ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Web Dev Stack — GitHub + DB + Browser</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"github"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/github"</span> },
+    <span class="key">"mysql"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/mysql"</span>,
+                <span class="key">"env"</span>: { <span class="key">"DB_URL"</span>: <span class="str">"\${env:LOCAL_DB}"</span> } },
+    <span class="key">"chrome"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/chrome-devtools"</span> }
+  }
+}</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ DevOps Stack — CI/CD + Monitoring</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"docker"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/docker"</span> },
+    <span class="key">"k8s"</span>:    { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/kubernetes"</span> },
+    <span class="key">"sentry"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/sentry"</span>,
+                  <span class="key">"env"</span>: { <span class="key">"SENTRY_TOKEN"</span>: <span class="str">"\${env:SENTRY}"</span> } },
+    <span class="key">"datadog"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/datadog"</span> }
+  }
+}</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ BUGpairoj Stack — LINE + Telegram + AD</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"line-notify"</span>: {
+      <span class="key">"command"</span>: <span class="str">"node ./mcp-servers/line-notify.js"</span>,
+      <span class="key">"env"</span>: { <span class="key">"LINE_TOKEN"</span>: <span class="str">"\${env:LINE_NOTIFY}"</span> }
+    },
+    <span class="key">"telegram"</span>: {
+      <span class="key">"command"</span>: <span class="str">"node ./mcp-servers/telegram-bot.js"</span>,
+      <span class="key">"env"</span>: { <span class="key">"TG_BOT"</span>: <span class="str">"\${env:TG_BOT_TOKEN}"</span> }
+    },
+    <span class="key">"active-directory"</span>: {
+      <span class="key">"command"</span>: <span class="str">"node ./mcp-servers/ad.js"</span>,
+      <span class="key">"env"</span>: { <span class="key">"AD_HOST"</span>: <span class="str">"192.168.3.50"</span> }
+    }
+  }
+}</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Project Management Stack — JIRA + Slack</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"jira"</span>: {
+      <span class="key">"command"</span>: <span class="str">"npx -y @mcp/jira"</span>,
+      <span class="key">"env"</span>: {
+        <span class="key">"JIRA_URL"</span>: <span class="str">"https://bugpairoj.atlassian.net"</span>,
+        <span class="key">"JIRA_TOKEN"</span>: <span class="str">"\${env:JIRA_TOKEN}"</span>
+      }
+    },
+    <span class="key">"slack"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/slack"</span> },
+    <span class="key">"notion"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/notion"</span> }
+  }
+}</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ Cloud Stack — AWS + Vercel + Cloudflare</h4>
+        <pre class="code-block" data-lang="json">{
+  <span class="key">"mcpServers"</span>: {
+    <span class="key">"aws"</span>: {
+      <span class="key">"command"</span>: <span class="str">"npx -y @mcp/aws"</span>,
+      <span class="key">"env"</span>: { <span class="key">"AWS_PROFILE"</span>: <span class="str">"bugpairoj-prod"</span> }
+    },
+    <span class="key">"vercel"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/vercel"</span> },
+    <span class="key">"cloudflare"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/cloudflare"</span> },
+    <span class="key">"supabase"</span>: { <span class="key">"command"</span>: <span class="str">"npx -y @mcp/supabase"</span> }
+  }
+}</pre>
+      </div>
     `
   },
 
@@ -1431,6 +1932,64 @@ const SECTION_CONTENT = {
         <h3>หลักการสำคัญ</h3>
         <p>โปรเจกต์ Claude Code ที่ดี = แยก <strong>"สิ่งที่ Claude อ่าน"</strong> (CLAUDE.md, .claude/) ออกจาก <strong>"สิ่งที่ Claude เขียน"</strong> (src/, tests/, docs/)</p>
       </div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่างโครงสร้าง 4 ขนาด</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Solo / Side project (เริ่มต้น)</h4>
+        <pre class="code-block" data-lang="text">my-side-project/
+├── CLAUDE.md         <span class="cmt"># 50-100 บรรทัด พอ</span>
+├── .claude/
+│   └── settings.json <span class="cmt"># แค่ basics</span>
+├── src/
+└── README.md</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ Small team (3-5 คน)</h4>
+        <pre class="code-block" data-lang="text">team-project/
+├── CLAUDE.md
+├── .claude/
+│   ├── settings.json
+│   ├── commands/      <span class="cmt"># /review, /deploy</span>
+│   └── .mcp.json      <span class="cmt"># GitHub + Slack</span>
+├── src/
+├── tests/
+└── docs/</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ Enterprise (BUGpairoj signature)</h4>
+        <pre class="code-block" data-lang="text">enterprise-app/
+├── CLAUDE.md
+├── .claude/
+│   ├── settings.json
+│   ├── settings.local.json
+│   ├── commands/      <span class="cmt"># 8-10 commands</span>
+│   ├── skills/        <span class="cmt"># 5+ skills</span>
+│   ├── agents/        <span class="cmt"># review, audit, devops</span>
+│   ├── plugins/       <span class="cmt"># BUGpairoj baseline</span>
+│   └── .mcp.json      <span class="cmt"># 6+ servers</span>
+├── src/{components,services,utils}
+├── tests/{unit,integration,e2e}
+├── docs/{architecture,api,onboarding}
+├── scripts/
+└── ...</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Mono-repo (multi-app)</h4>
+        <pre class="code-block" data-lang="text">bugpairoj-mono/
+├── CLAUDE.md             <span class="cmt"># shared rules</span>
+├── .claude/              <span class="cmt"># shared config</span>
+├── apps/
+│   ├── medrecord/
+│   │   ├── CLAUDE.md     <span class="cmt"># app-specific override</span>
+│   │   └── src/
+│   ├── pos-shabu/
+│   │   ├── CLAUDE.md
+│   │   └── src/
+│   └── attendance/
+├── packages/             <span class="cmt"># shared libs</span>
+│   ├── ui/
+│   ├── thai-utils/
+│   └── line-notify/
+└── pnpm-workspace.yaml</pre>
+      </div>
     `
   },
   2: {
@@ -1505,6 +2064,90 @@ const SECTION_CONTENT = {
     <span class="key">"PreCommit"</span>: <span class="str">"./scripts/full-test.sh"</span>
   }
 }</pre>
+
+      <div class="section">
+        <h3>📋 ตัวอย่าง Hook scripts 5 แบบ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ PreToolUse — บล็อกคำสั่งอันตราย</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt">#!/bin/bash
+# scripts/block-dangerous.sh</span>
+
+CMD=<span class="str">"$1"</span>
+
+<span class="cmt"># Block destructive commands</span>
+<span class="key">if</span> <span class="key">echo</span> <span class="str">"$CMD"</span> | <span class="key">grep</span> -qE <span class="str">"(rm -rf /|DROP DATABASE|TRUNCATE)"</span>; <span class="key">then</span>
+  <span class="key">echo</span> <span class="str">"❌ Blocked: $CMD"</span>
+  <span class="key">exit</span> <span class="num">1</span>
+<span class="key">fi</span>
+
+<span class="cmt"># Block git push --force on main</span>
+<span class="key">if</span> <span class="key">echo</span> <span class="str">"$CMD"</span> | <span class="key">grep</span> -qE <span class="str">"git push.*--force.*main"</span>; <span class="key">then</span>
+  <span class="key">echo</span> <span class="str">"❌ ห้าม force push บน main!"</span>
+  <span class="key">exit</span> <span class="num">1</span>
+<span class="key">fi</span>
+
+<span class="key">exit</span> <span class="num">0</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ PostToolUse — auto format + lint</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt">#!/bin/bash
+# scripts/auto-format.sh</span>
+
+FILE=<span class="str">"$1"</span>
+
+<span class="key">case</span> <span class="str">"$FILE"</span> <span class="key">in</span>
+  *.php) <span class="key">php</span> -l <span class="str">"$FILE"</span> &amp;&amp; <span class="key">php-cs-fixer</span> fix <span class="str">"$FILE"</span> ;;
+  *.ts|*.tsx) <span class="key">prettier</span> --write <span class="str">"$FILE"</span> &amp;&amp; <span class="key">eslint</span> --fix <span class="str">"$FILE"</span> ;;
+  *.py) <span class="key">black</span> <span class="str">"$FILE"</span> &amp;&amp; <span class="key">ruff</span> --fix <span class="str">"$FILE"</span> ;;
+  *.sql) <span class="key">sqlfluff</span> fix <span class="str">"$FILE"</span> --dialect mysql ;;
+<span class="key">esac</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ SessionStart — load context อัตโนมัติ</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt">#!/bin/bash
+# scripts/session-start.sh</span>
+
+<span class="key">echo</span> <span class="str">"📋 Today's open issues:"</span>
+<span class="key">gh</span> issue list --assignee @me --limit <span class="num">5</span>
+
+<span class="key">echo</span> <span class="str">"🔥 Recent commits:"</span>
+<span class="key">git</span> log --oneline -<span class="num">5</span>
+
+<span class="key">echo</span> <span class="str">"⚠️ Failing tests (if any):"</span>
+<span class="key">npm</span> test -- --reporter=minimal <span class="num">2</span>&gt;&amp;<span class="num">1</span> | <span class="key">tail</span> -<span class="num">5</span>
+
+<span class="key">echo</span> <span class="str">"🌿 Current branch: $(git branch --show-current)"</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ PreCommit — secret + test gate</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt">#!/bin/bash
+# scripts/pre-commit-gate.sh</span>
+
+<span class="cmt"># 1. Scan secrets</span>
+<span class="key">if</span> <span class="key">grep</span> -rE <span class="str">"(sk-[a-zA-Z0-9]{32,}|API_KEY=|password=)"</span> <span class="str">"$@"</span>; <span class="key">then</span>
+  <span class="key">echo</span> <span class="str">"🚨 Secret detected!"</span> &amp;&amp; <span class="key">exit</span> <span class="num">1</span>
+<span class="key">fi</span>
+
+<span class="cmt"># 2. Run quick test</span>
+<span class="key">npm</span> run test:quick || { <span class="key">echo</span> <span class="str">"❌ Tests failed"</span>; <span class="key">exit</span> <span class="num">1</span>; }
+
+<span class="cmt"># 3. Check commit message format</span>
+MSG=$(<span class="key">cat</span> .git/COMMIT_EDITMSG)
+<span class="key">if</span> ! <span class="key">echo</span> <span class="str">"$MSG"</span> | <span class="key">grep</span> -qE <span class="str">"^(feat|fix|docs|refactor|test|chore):"</span>; <span class="key">then</span>
+  <span class="key">echo</span> <span class="str">"❌ Commit message ต้องขึ้นต้นด้วย feat:/fix:/docs:/..."</span>
+  <span class="key">exit</span> <span class="num">1</span>
+<span class="key">fi</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ Notification — แจ้ง LINE เมื่อ deploy เสร็จ</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt">#!/bin/bash
+# scripts/notify-line.sh</span>
+
+EVENT=<span class="str">"$1"</span>      <span class="cmt"># deploy_success / deploy_fail / build_done</span>
+DETAIL=<span class="str">"$2"</span>
+
+MSG=<span class="str">"🚀 [$EVENT] $DETAIL\\nUser: $USER\\nTime: $(date +'%F %T')"</span>
+
+<span class="key">curl</span> -X POST https://notify-api.line.me/api/notify \\
+  -H <span class="str">"Authorization: Bearer $LINE_NOTIFY_TOKEN"</span> \\
+  -F <span class="str">"message=$MSG"</span></pre>
+      </div>
     `
   },
   6: {
@@ -1522,6 +2165,96 @@ const SECTION_CONTENT = {
         </tbody>
       </table>
       <div class="tip-box"><span class="icon">🎯</span><div><strong>ทำไมต้องแยก references?</strong> เอกสารยาว 1000 บรรทัดถ้าใส่ใน SKILL.md จะกิน context ทุกครั้ง — ใส่ใน references/ แล้วให้ Claude เปิดดูเฉพาะตอนต้องใช้จริง</div></div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่าง Skill 5 ประเภทที่ใช้บ่อย</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Skill: <code>php-security</code> — ตรวจ PHP security</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+name: php-security
+description: |
+  Auto-trigger เมื่อพบไฟล์ .php ที่มี SQL หรือ form
+  ตรวจตาม OWASP Top 10 + BUGpairoj checklist
+---</span>
+
+<span class="key"># PHP Security Audit Skill</span>
+
+ทำตามขั้นตอน:
+1. รัน <span class="var">scripts/scan-sqli.sh</span> หา SQL injection
+2. รัน <span class="var">scripts/scan-xss.sh</span> หา XSS
+3. โหลด <span class="var">references/owasp-top10.md</span> ถ้าเจอ critical
+4. สรุปด้วย <span class="var">assets/risk-matrix.md</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ Skill: <code>line-bot-builder</code> — สร้าง LINE Bot</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+name: line-bot-builder
+description: |
+  Trigger เมื่อ user พูดเรื่อง "LINE Bot", "LIFF", 
+  "Flex Message", "Rich Menu"
+---</span>
+
+ใช้ template ใน <span class="var">assets/</span>:
+- flex-card-product.json
+- flex-receipt.json
+- rich-menu-config.json
+
+โหลด <span class="var">references/line-api-docs.md</span> เมื่อต้องการ API spec</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ Skill: <code>thai-locale</code> — Buddhist Era + Thai utility</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+name: thai-locale
+description: |
+  Trigger เมื่อต้องจัดการวันที่ พ.ศ. หรือ
+  เลขไทย, เงินไทย format
+---</span>
+
+<span class="key"># Thai Locale Skill</span>
+
+มี util ที่พร้อมใช้:
+- <span class="var">toBE(date)</span> — แปลงเป็น พ.ศ.
+- <span class="var">toThaiDigit(num)</span> — เลขอารบิก → ไทย
+- <span class="var">formatBaht(amount)</span> — รูปแบบเงินไทย
+- <span class="var">numberToThaiText(123)</span> — "หนึ่งร้อยยี่สิบสาม"
+
+ทุก function อยู่ใน <span class="var">scripts/thai-utils.ts</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Skill: <code>db-migration</code> — สร้าง MySQL migration</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+name: db-migration
+description: |
+  Trigger เมื่อ user ต้องการเพิ่ม/แก้ table
+---</span>
+
+ทุก migration ต้อง:
+- ตั้งชื่อ <span class="var">YYYYMMDDHHMMSS_action_table.sql</span>
+- มี <span class="var">-- UP</span> และ <span class="var">-- DOWN</span> sections
+- ใช้ utf8mb4_unicode_ci
+- เพิ่ม <span class="var">created_at, updated_at</span> เสมอ
+- เพิ่ม index บน FK
+
+ดู template ที่ <span class="var">assets/migration-template.sql</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ Skill: <code>chart-generator</code> — Chart.js wrapper</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">---
+name: chart-generator
+description: |
+  Trigger เมื่อต้องการสร้าง chart, graph, 
+  dashboard widget
+---</span>
+
+มี chart preset 6 แบบ:
+- KPI Card (number + sparkline)
+- Bar Chart (รายเดือน พ.ศ.)
+- Line Chart (trend)
+- Donut Chart (สัดส่วน)
+- Radar Chart (KPI competency)
+- Heatmap (calendar)
+
+ทุก chart:
+- ใช้สีตาม <span class="var">assets/color-palette.json</span>
+- รองรับ dark/light mode
+- Tooltip ภาษาไทย</pre>
+      </div>
     `
   },
   7: {
@@ -1572,6 +2305,70 @@ const SECTION_CONTENT = {
         <div class="feat-card"><h4>👀 Supervisor</h4><p>คอย monitor + retry ถ้า agent ใดล้มเหลว</p></div>
         <div class="feat-card"><h4>🐝 Swarm</h4><p>Dynamic peer delegation — agent ใดว่างก็รับงาน</p></div>
       </div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่างใช้งานจริง 5 สถานการณ์</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Orchestrator: "Audit ทั้งระบบ MedRecord"</h4>
+        <pre class="code-block" data-lang="text">User: "audit ระบบ MedRecord ก่อน deploy"
+       │
+       ▼
+[Orchestrator]
+  ├─→ security-auditor    → OWASP scan
+  ├─→ performance-auditor → query analysis
+  ├─→ code-reviewer       → quality check
+  └─→ db-auditor          → schema review
+       │
+       ▼
+[Orchestrator merges] → Final audit report (PDF)</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ Pipeline: "Refactor + Test + Deploy"</h4>
+        <pre class="code-block" data-lang="text">[refactor-agent]
+   ↓ (cleaned code)
+[test-writer]
+   ↓ (with new tests)
+[code-reviewer]
+   ↓ (approved)
+[devops-sre]
+   → Deployed to staging</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ Map-Reduce: "Analyze 100 PHP files"</h4>
+        <pre class="code-block" data-lang="text">User: "วิเคราะห์ทุกไฟล์ใน src/ หา code smell"
+                    │
+                    ▼
+        [Splitter] แตกเป็น 10 batches
+                    │
+       ┌────────┬───┴───┬────────┐
+       ▼        ▼       ▼        ▼
+   [agent1] [agent2] [agent3] ...[agent10]
+       │        │       │        │
+       └────────┴───┬───┴────────┘
+                   ▼
+           [Reducer] รวมผล
+                   ▼
+       Final report: 47 issues found</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Supervisor: "Self-healing deploy"</h4>
+        <pre class="code-block" data-lang="text">[supervisor]
+  → ส่ง deploy task ไป [deploy-agent]
+  ← ถ้า fail (timeout/error)
+  → retry attempt 1 (รอ 30 วิ)
+  ← ถ้า fail อีก
+  → retry attempt 2 (รอ 60 วิ)
+  ← ถ้า fail อีก
+  → escalate ไป [human-on-call]
+  → ส่ง LINE Notify CTO ทันที</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ Swarm: "Bug bounty scanner"</h4>
+        <pre class="code-block" data-lang="text">[Swarm queue: 50 endpoints to scan]
+        │
+   ┌────┴────┬─────────┬─────────┐
+   ▼         ▼         ▼         ▼
+[scan-1]  [scan-2]  [scan-3]  [scan-4]
+   │         │         │         │
+ถ้า agent ใดเสร็จก่อน → หยิบ task ถัดไป
+ทำงานคู่ขนานเต็มที่ — ใครว่างใครรับ</pre>
+      </div>
     `
   },
   10: {
@@ -1620,6 +2417,61 @@ claude</pre>
           <li>ใช้ subagent สำหรับงาน sub-task — context แยกกัน</li>
         </ul>
       </div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่างจัดการ context 4 สถานการณ์</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ งานเริ่ม session: โหลด context เร็วที่สุด</h4>
+        <pre class="code-block" data-lang="text">User: "วันนี้กลับมาทำ MedRecord ต่อ"
+        ↓
+Claude: 
+1. อ่าน CLAUDE.md (auto)
+2. /resume → โหลด session ล่าสุด
+3. git log -5 → ดูว่าทำอะไรไปแล้ว
+4. รัน /test-quick เช็คว่าทุกอย่างยัง pass
+5. พร้อมทำงานต่อ
+
+Token used: ~5K (น้อยมาก)</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ งานยาว: /compact ตามจังหวะ</h4>
+        <pre class="code-block" data-lang="text">เริ่ม session: 0% context
+  ↓ ทำงาน 2 ชั่วโมง
+ใช้ไปแล้ว: 65%
+  ↓ /compact
+สรุปประวัติเก่าเหลือ summary 3 paragraph
+ใช้ไปแล้ว: 25% (ลดลง 40%)
+  ↓ ทำงานต่อได้อีกนาน
+ก่อนใช้ครบ 90% → /compact อีก
+หรือ → save summary แล้วเปิด session ใหม่</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ ใช้ subagent แทน main context</h4>
+        <pre class="code-block" data-lang="text">❌ BAD: ให้ main agent ทำหมด
+User: "research, code, test, document, deploy"
+→ context บวมเร็วมาก
+
+✅ GOOD: แตกเป็น subagent
+- main agent: orchestrate
+- sub-1: research (context แยก)
+- sub-2: code (context แยก)
+- sub-3: test (context แยก)
+- sub-4: document (context แยก)
+→ main agent ใช้ context น้อยมาก</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Reference pattern: ลิงก์แทน inline</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">❌ BAD: paste 500 บรรทัดของ schema ลงใน chat</span>
+"นี่คือ schema:
+CREATE TABLE patients (...
+... อีก 500 บรรทัด)"
+
+<span class="cmt">✅ GOOD: link ไปยังไฟล์</span>
+"ดู schema ที่ <span class="var">migrations/2026_01_create_patients.sql</span>
+แก้ตามที่ระบุ:
+- เพิ่ม column <span class="var">blood_type</span>
+- เพิ่ม index บน <span class="var">citizen_id</span>"
+
+→ Claude อ่านไฟล์เฉพาะที่จำเป็น
+→ context ใช้น้อยกว่า 10x</pre>
+      </div>
     `
   },
   12: {
@@ -1638,6 +2490,92 @@ claude</pre>
         </tbody>
       </table>
       <div class="warn-box"><span class="icon">🚨</span><div><strong>กฎเหล็ก:</strong> ถ้า secret หลุดขึ้น git ครั้งหนึ่ง — ต้อง <em>rotate</em> ทันที แม้ลบ commit แล้ว เพราะมีคนเก็บ history ไว้แล้ว</div></div>
+
+      <div class="section">
+        <h3>📋 ตัวอย่างป้องกัน secret leak 5 มาตรการ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Pre-commit hook สแกน secret อัตโนมัติ</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt"># .git/hooks/pre-commit</span>
+<span class="cmt"># สแกนหา API keys, tokens, passwords</span>
+
+<span class="key">PATTERNS</span>=(
+  <span class="str">'sk-[a-zA-Z0-9]{32,}'</span>           <span class="cmt"># OpenAI</span>
+  <span class="str">'AIza[0-9A-Za-z_-]{35}'</span>         <span class="cmt"># Google</span>
+  <span class="str">'AKIA[0-9A-Z]{16}'</span>              <span class="cmt"># AWS</span>
+  <span class="str">'ghp_[a-zA-Z0-9]{36}'</span>           <span class="cmt"># GitHub PAT</span>
+  <span class="str">'(password|secret|token).*=.*[\\"\\047]'</span>
+)
+
+<span class="key">for</span> p <span class="key">in</span> <span class="str">"\${PATTERNS[@]}"</span>; <span class="key">do</span>
+  <span class="key">if</span> git diff --cached | <span class="key">grep</span> -qE <span class="str">"$p"</span>; <span class="key">then</span>
+    <span class="key">echo</span> <span class="str">"🚨 Secret detected!"</span>
+    <span class="key">exit</span> <span class="num">1</span>
+  <span class="key">fi</span>
+<span class="key">done</span></pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ ใช้ env vars แทน hardcode</h4>
+        <pre class="code-block" data-lang="php"><span class="cmt">// ❌ ห้าม hardcode</span>
+$apiKey = <span class="str">"sk-proj-abc123..."</span>;
+
+<span class="cmt">// ✅ อ่านจาก env</span>
+$apiKey = $_ENV[<span class="str">'OPENAI_API_KEY'</span>] ?? <span class="key">throw new</span> Exception(<span class="str">'Missing key'</span>);
+
+<span class="cmt">// ✅ Better: แยก config layer</span>
+$apiKey = config(<span class="str">'services.openai.key'</span>);</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ .gitignore ป้องกันครอบคลุม</h4>
+        <pre class="code-block" data-lang="text"># Environments
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+# Claude private
+.claude/settings.local.json
+.claude/.credentials.json
+
+# IDE secrets
+.vscode/settings.json
+.idea/workspace.xml
+
+# Build artifacts (อาจมี secret)
+dist/
+build/
+*.zip</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Secret rotation ทุก 90 วัน</h4>
+        <pre class="code-block" data-lang="markdown"><span class="key"># Quarterly rotation checklist</span>
+
+ทุก 3 เดือน — ทำ list:
+- [ ] LINE Notify token
+- [ ] Telegram Bot token
+- [ ] Database password
+- [ ] JWT signing secret
+- [ ] AWS access key
+- [ ] OpenAI API key
+- [ ] Google Maps API key
+
+ทำได้:
+1. สร้าง secret ใหม่ในระบบเดิม
+2. Update .env ใน production (zero downtime)
+3. Verify เก่าใช้ไม่ได้แล้ว
+4. ลบ secret เก่า</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ MCP scope: least privilege</h4>
+        <pre class="code-block" data-lang="json"><span class="cmt">// ❌ ให้สิทธิ์เกินจำเป็น</span>
+<span class="key">"github"</span>: {
+  <span class="key">"env"</span>: { <span class="key">"GITHUB_TOKEN"</span>: <span class="str">"\${env:GH_ADMIN}"</span> }   <span class="cmt">// admin scope</span>
+}
+
+<span class="cmt">// ✅ ใช้ fine-grained PAT เฉพาะที่จำเป็น</span>
+<span class="key">"github"</span>: {
+  <span class="key">"env"</span>: {
+    <span class="key">"GITHUB_TOKEN"</span>: <span class="str">"\${env:GH_READONLY}"</span>,
+    <span class="key">"REPOS"</span>: <span class="str">"bugpairoj/medrecord"</span>     <span class="cmt">// limit to 1 repo</span>
+  }
+}</pre>
+      </div>
     `
   },
   13: {
@@ -1655,6 +2593,95 @@ claude</pre>
           <tr><td>ไม่มี error patterns</td><td>handle error ไม่สม่ำเสมอ</td><td>ใส่ตัวอย่าง try-catch + log format</td></tr>
         </tbody>
       </table>
+
+      <div class="section">
+        <h3>📋 Bad vs Good 5 ตัวอย่าง</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ "Write good code" (กว้างเกินไป)</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">❌ BAD</span>
+## Guidelines
+- Write good code
+- Be careful with security
+- Test things properly
+
+<span class="cmt">✅ GOOD</span>
+## Guidelines
+- ใช้ PDO prepared statements เสมอ — ห้าม string concat ใน SQL
+- เช็ค RBAC ทุก endpoint: <span class="var">$user->can('edit_patient')</span>
+- ทุก function ต้องมี unit test ครอบคลุม:
+  - Happy path (1 case)
+  - Edge cases (3+: empty, null, max)
+  - Error case (1+: invalid input)
+- Coverage threshold: 80% (fail CI ถ้าต่ำกว่า)</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ Duplicate documentation</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">❌ BAD — copy ทั้งคู่มือ API ลงใน CLAUDE.md</span>
+## API Reference
+### POST /api/patients
+... (200 บรรทัด detail)
+
+<span class="cmt">✅ GOOD — link เท่านั้น</span>
+## API Reference
+ดู detail ที่ <span class="var">docs/api-reference.md</span>
+- POST /api/patients — สร้างผู้ป่วยใหม่
+- GET /api/patients/:id — ดูข้อมูล
+- PUT /api/patients/:id — แก้ไข
+(complete spec: link)</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ ไม่มี error pattern</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">❌ BAD — ไม่บอกแพทเทิร์น error handling</span>
+- Handle errors properly
+
+<span class="cmt">✅ GOOD — ระบุชัดเจน</span>
+## Error Handling Pattern
+
+ทุก async function ต้องใช้รูปแบบนี้ (TypeScript):
+
+<span class="key">try</span> {
+  <span class="key">const</span> result = <span class="key">await</span> <span class="fn">someOperation</span>();
+  log.<span class="fn">info</span>(<span class="str">'operation_success'</span>, { id: result.id });
+  <span class="key">return</span> { ok: <span class="key">true</span>, data: result };
+} <span class="key">catch</span> (err) {
+  log.<span class="fn">error</span>(<span class="str">'operation_failed'</span>, { 
+    error: err.message,
+    stack: err.stack,
+    context: { userId: ctx.user.id }
+  });
+  <span class="key">await</span> <span class="fn">notifyOps</span>(err);
+  <span class="cmt">// ห้ามคืน raw error ให้ user</span>
+  <span class="key">return</span> { ok: <span class="key">false</span>, error: <span class="str">'Internal error'</span> };
+}</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ ไม่มี test guidance</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">❌ BAD</span>
+## Testing
+We use Jest.
+
+<span class="cmt">✅ GOOD</span>
+## Testing
+- **Framework**: Vitest 1.x (ไม่ใช่ Jest!)
+- **Location**: ติด-คู่กับ source: <span class="var">user.ts → user.test.ts</span>
+- **Coverage**: ≥ 80% (statements, branches, functions, lines)
+- **Pattern**: arrange-act-assert
+- **Mock**: ใช้ vi.mock() ห้ามใช้ jest.mock()
+- **DB tests**: ใช้ Testcontainers MySQL — ห้าม mock ORM
+- **E2E**: Playwright + page object pattern</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ Vague stack info</h4>
+        <pre class="code-block" data-lang="markdown"><span class="cmt">❌ BAD</span>
+## Stack
+- PHP, MySQL, JS
+
+<span class="cmt">✅ GOOD</span>
+## Stack
+- **PHP 8.2** (strict_types=1 ทุกไฟล์, no PHP 5/7 syntax)
+- **MySQL 8.0** + utf8mb4_unicode_ci + InnoDB
+- **PDO** (ห้ามใช้ mysqli)
+- **Tailwind CSS 3.4** + custom config ใน <span class="var">tailwind.config.js</span>
+- **TypeScript 5.x** strict mode
+- **Vite 5** (ไม่ใช่ webpack)
+- **Node 20+ LTS</span></pre>
+      </div>
     `
   },
   14: {
@@ -1679,6 +2706,76 @@ claude --verbose
 
 <span class="cmt"># resume session ID xxx</span>
 claude --resume session_abc123</pre>
+
+      <div class="section">
+        <h3>📋 ตัวอย่างวิธี debug 5 สถานการณ์</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Tool call ล้มเหลวซ้ำๆ</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt"># เปิด verbose ดู tool call ทั้งหมด</span>
+claude --verbose
+
+<span class="cmt"># ใน session:</span>
+<span class="cmt"># จะเห็น log:
+[tool] Bash(npm test) → exit code 1
+[tool] Read(package.json) → success
+[tool] Edit(test.ts) → permission denied  ← เจอแล้ว!</span>
+
+<span class="cmt"># แก้ permission แล้วลองใหม่</span>
+chmod +w tests/</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ Token spend สูงผิดปกติ</h4>
+        <pre class="code-block" data-lang="text">/cost
+
+Output:
+  Session total: 245K tokens ($1.24)
+  
+  Top consumers:
+  1. Read(node_modules/...) — 80K  ← ผิด!
+  2. CLAUDE.md — 30K
+  3. Edit(src/...) — 25K
+
+แก้ไข: เพิ่ม node_modules/ ใน .claudeignore</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ Skill ไม่ถูก trigger</h4>
+        <pre class="code-block" data-lang="text">User: "review code นี้ให้หน่อย"
+Claude: ← ไม่ใช้ code-review skill
+
+ตรวจ description ของ skill:
+❌ "Review code"  (กว้างเกินไป)
+✅ "Use this skill เมื่อ user 
+    พูดคำว่า: review, ตรวจ code, 
+    audit, check security"
+
+แก้ description ให้ตรง trigger word
+→ skill จะ activate ทันที</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Hook ไม่ทำงาน</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt"># ตรวจ permission</span>
+ls -la scripts/precommit.sh
+
+<span class="cmt"># ต้องเป็น executable</span>
+chmod +x scripts/precommit.sh
+
+<span class="cmt"># ทดสอบรันเอง</span>
+./scripts/precommit.sh
+
+<span class="cmt"># ดู error ใน Claude Code</span>
+tail -f ~/.claude/logs/hooks.log</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ MCP server ไม่ตอบ</h4>
+        <pre class="code-block" data-lang="bash"><span class="cmt"># Restart Claude Code</span>
+claude --restart
+
+<span class="cmt"># ตรวจ MCP server logs</span>
+ls ~/.claude/mcp-logs/
+cat ~/.claude/mcp-logs/github-2026-04-27.log
+
+<span class="cmt"># Test MCP server โดยตรง</span>
+npx -y @mcp/github --test
+
+<span class="cmt"># ตรวจ env vars</span>
+echo $GITHUB_TOKEN  <span class="cmt"># ต้องไม่ว่าง</span></pre>
+      </div>
     `
   },
   15: {
@@ -1696,6 +2793,74 @@ claude --resume session_abc123</pre>
       </div>
 
       <div class="tip-box"><span class="icon">🎓</span><div><strong>เคล็ดลับสุดท้ายของ AI Pairoj:</strong> ทำ <em>"BUGpairoj baseline plugin"</em> ที่ bundle skills + commands + agents มาตรฐานของกลุ่ม — โปรเจกต์ใหม่ทุกตัวแค่ install plugin เดียวก็ได้ stack ครบ (PDO, RBAC, CSRF, LINE Notify, Buddhist Era, glassmorphism UI)</div></div>
+
+      <div class="section">
+        <h3>📋 Workflow ระดับโปร 5 รูปแบบ</h3>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">1️⃣ Parallel research ด้วย subagents</h4>
+        <pre class="code-block" data-lang="text">User: "เปรียบเทียบ Stripe vs Omise vs 2C2P สำหรับ thai market"
+
+main agent → ส่ง 3 งานคู่ขนาน:
+  ├─ subagent-1: research Stripe Thai
+  ├─ subagent-2: research Omise
+  └─ subagent-3: research 2C2P
+            ↓
+   merge → comparison table
+
+⏱️ เร็วกว่า sequential 3 เท่า</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">2️⃣ Plan-Build-Verify pattern</h4>
+        <pre class="code-block" data-lang="text">เริ่ม session ใหม่ทุกครั้งด้วย 3 step:
+
+1. /plan         → สร้างแผน + อนุมัติก่อน
+2. ทำตามแผน    → step-by-step ตาม checklist
+3. /verify       → ตรวจว่าทำครบทุกข้อ
+                  + รัน test
+                  + diff review
+
+ห้ามข้ามขั้น — แม้งานง่ายแค่ไหน</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">3️⃣ Skill stack pattern (BUGpairoj signature)</h4>
+        <pre class="code-block" data-lang="text">.claude/skills/
+  ├─ bugpairoj-base/      ← stack หลัก (PDO+CSRF+RBAC)
+  ├─ bugpairoj-ui/        ← Glassmorphism + Tailwind
+  ├─ bugpairoj-thai/      ← พ.ศ. + Thai utility
+  ├─ bugpairoj-line/      ← LINE Notify + LIFF
+  └─ bugpairoj-tg/        ← Telegram Bot
+
+ทุกโปรเจกต์ใหม่ — copy 5 folders นี้
+แล้วใส่ทับ skill เฉพาะโปรเจกต์</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">4️⃣ Phase-by-phase delivery (ทำต่อไป)</h4>
+        <pre class="code-block" data-lang="text">เริ่มโปรเจกต์ใหญ่ → แตกเป็นเฟส:
+
+Phase 1: Database schema + migration
+Phase 2: Backend API (CRUD)
+Phase 3: Frontend mockup (HTML)
+Phase 4: Frontend integration
+Phase 5: Auth + RBAC
+Phase 6: Reports + export
+Phase 7: LINE/Telegram notification
+Phase 8: Testing + deploy
+
+แต่ละ phase จบแล้ว — user พิมพ์ "ทำต่อไป"
+Claude จะรู้ว่าไป phase ถัดไป</pre>
+
+        <h4 style="color:var(--cyan-soft);font-size:14px;margin:18px 0 8px;">5️⃣ Auto-document with /document</h4>
+        <pre class="code-block" data-lang="text">หลัง coding เสร็จ → /document
+
+Claude จะ:
+1. อ่าน source code ทั้งหมด
+2. Generate:
+   - architecture.md (Mermaid diagram)
+   - api-reference.md (endpoints + examples)
+   - onboarding.md (setup guide)
+   - changelog.md (จาก git log)
+3. Update README.md
+4. สร้าง postman collection
+
+ไม่ต้องเขียน docs เอง — Claude ทำให้</pre>
+      </div>
     `
   }
 };
